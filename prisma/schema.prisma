@@ -1,0 +1,49 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "windows","linux-musl"]
+}
+
+datasource db {
+  provider = "postgresql"
+
+  url = env("DATABASE_URL")
+}
+
+model Product {
+  id            Int             @id @default(autoincrement())
+  category      ProductCategory @relation(fields: [category_id], references: [id])
+  category_id   Int
+  name          String
+  description   String?
+  product_image String
+}
+
+
+
+model ProductCategory {
+  id                 Int               @id @default(autoincrement())
+  category_name      String
+  products           Product[]
+  Variation          Variation[]
+}
+
+model Variation {
+  id          Int               @id @default(autoincrement())
+  category    ProductCategory   @relation(fields: [category_id], references: [id])
+  category_id Int
+  name        String
+  stock       Int
+}
+model User {
+
+  id           Int            @id @default(autoincrement())
+  name         String
+  phone_numner Int
+  address      String
+  email        String         @unique
+  phone_number String?
+  password     String
+}
+
+
+
